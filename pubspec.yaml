@@ -1,0 +1,36 @@
+name: keycloack_integrations
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  app_links: ^7.0.0
+  bloc: ^9.2.0
+  dio: ^5.9.1
+  flutter:
+    sdk: flutter
+  flutter_appauth: ^11.0.0
+  flutter_bloc: ^9.1.1
+  flutter_screenutil: ^5.9.3
+  flutter_secure_storage: ^10.0.0
+  formz: ^0.8.0
+  freezed: ^3.2.5
+  freezed_annotation: ^3.1.0
+  get_it: ^9.2.0
+  go_router: ^13.2.5
+  json_serializable: ^6.12.0
+  jwt_decoder: ^2.0.1
+  shared_preferences: ^2.5.4
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.11.0
+
+flutter:
+  uses-material-design: true
