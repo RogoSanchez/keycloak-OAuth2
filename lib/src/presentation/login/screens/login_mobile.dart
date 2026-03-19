@@ -135,7 +135,7 @@ class LoginMobile extends StatelessWidget {
           // Botón de Keycloak
           SessionButton(
             onPressed: _handleKeycloakLogin,
-            text: 'Continuar con Keycloak',
+            text: 'Continuar con Idp',
           ),
 
           SizedBox(height: 20.h),

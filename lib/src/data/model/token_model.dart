@@ -31,33 +31,21 @@ class TokenModel {
     final scope = json['scope'] as String? ?? '';
     final tokenType = json['token_type'] as String? ?? 'Bearer';
 
+    // Si refresh_expires_in es 0 o null, el refresh token no expira (offline token)
+    // Solo calculamos expiración si es un valor positivo
+    DateTime? refreshExpiry;
+    if (refreshExpiresIn != null && refreshExpiresIn > 0) {
+      refreshExpiry = DateTime.now().add(Duration(seconds: refreshExpiresIn));
+    }
+
     return TokenModel(
       accessToken: accessToken,
       refreshToken: refreshToken,
       idToken: idToken,
       accessTokenExpiry: DateTime.now().add(Duration(seconds: expiresIn)),
-      refreshTokenExpiry: refreshExpiresIn != null
-          ? DateTime.now().add(Duration(seconds: refreshExpiresIn))
-          : null,
+      refreshTokenExpiry: refreshExpiry,
       scopes: scope.split(' ').where((s) => s.isNotEmpty).toList(),
       tokenType: tokenType,
-    );
-  }
-
-  /// Crea un TokenModel a partir de datos almacenados
-  factory TokenModel.fromStorage({
-    required String accessToken,
-    required String refreshToken,
-    String? idToken,
-    required DateTime accessTokenExpiry,
-    DateTime? refreshTokenExpiry,
-  }) {
-    return TokenModel(
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      idToken: idToken,
-      accessTokenExpiry: accessTokenExpiry,
-      refreshTokenExpiry: refreshTokenExpiry,
     );
   }
 
@@ -80,17 +68,11 @@ class TokenModel {
     return refreshTokenExpiry!.isAfter(DateTime.now().add(margin));
   }
 
-  /// Verifica si el access token está próximo a expirar (dentro del margen de tiempo)
-  /// Esto permite hacer refresh proactivo antes de que expire
-  bool get isAccessTokenExpiringSoon {
-    // Refrescar cuando falten menos de 2 minutos para expirar
-    final soonMargin = Duration(seconds: 120);
-    return accessTokenExpiry.isBefore(DateTime.now().add(soonMargin));
-  }
+ 
 
   /// Verifica si se necesita refrescar el token
   /// Ahora refresca proactivamente antes de que expire el access token
-  bool get needsRefresh => isAccessTokenExpiringSoon && isRefreshTokenValid;
+  bool get needsRefresh => !isAccessTokenValid && isRefreshTokenValid;
 
   /// Verifica si la sesión está completamente expirada
   bool get isSessionExpired => !isAccessTokenValid && !isRefreshTokenValid;
@@ -103,29 +85,6 @@ class TokenModel {
       return {};
     }
   }
-
-  /// Decodifica el ID token JWT y retorna los claims
-  Map<String, dynamic>? get idTokenClaims {
-    if (idToken == null) return null;
-    try {
-      return JwtDecoder.decode(idToken!);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  /// Obtiene el subject (user ID) del token
-  String? get subject => accessTokenClaims['sub'] as String?;
-
-  /// Obtiene el email del token
-  String? get email => accessTokenClaims['email'] as String?;
-
-  /// Obtiene el nombre preferido del usuario
-  String? get preferredUsername =>
-      accessTokenClaims['preferred_username'] as String?;
-
-  /// Obtiene el nombre completo del usuario
-  String? get name => accessTokenClaims['name'] as String?;
 
   /// Obtiene los roles del realm
   List<String> get realmRoles {
@@ -187,8 +146,4 @@ class TokenModel {
     );
   }
 
-  @override
-  String toString() {
-    return 'TokenModel(subject: $subject, email: $email, isValid: $isAccessTokenValid)';
-  }
 }

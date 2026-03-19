@@ -1,21 +1,16 @@
 import 'dart:async';
 import 'package:keycloack_integrations/src/core/constants/keyclock_constants.dart';
 import 'package:keycloack_integrations/src/core/services/abstract_service.dart';
-
 import 'html_stub.dart' if (dart.library.html) 'dart:html' as html;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:keycloack_integrations/src/core/exceptions/error_handling.dart';
-import 'package:keycloack_integrations/src/entities/model/token_model.dart';
+import 'package:keycloack_integrations/src/data/model/token_model.dart';
 
 /// Servicio principal para la integración con Keycloak
 ///
 /// Proporciona métodos para:
-/// - Login con usuario/contraseña (Resource Owner Password Grant)
 /// - Login con OAuth2/OIDC (Authorization Code Grant con PKCE)
-/// - Refresh de tokens
-/// - Logout
-/// - Obtención de información del usuario
 class KeycloakServiceWeb extends AbstractKeycloakService {
   KeycloakServiceWeb({required super.dio, required super.storageService});
 

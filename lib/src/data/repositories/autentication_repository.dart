@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:keycloack_integrations/src/core/exceptions/exceptions.dart';
 import 'package:keycloack_integrations/src/core/services/abstract_service.dart';
-import 'package:keycloack_integrations/src/entities/model/token_model.dart';
-import 'package:keycloack_integrations/src/entities/model/user_model.dart';
+import 'package:keycloack_integrations/src/data/model/token_model.dart';
+import 'package:keycloack_integrations/src/data/model/user_model.dart';
 
 enum AuthenticationStatus {
   unknown,

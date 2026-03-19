@@ -1,22 +1,19 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Configuración de Keycloak para la aplicación
-///
+/// Las variables se cargan directamente desde el .env
 class KeyclockConstants {
   KeyclockConstants._();
 
   /// URL base del servidor Keycloak
-  static const String serverUrl = (kIsWeb)
-      ? 'http://localhost:8080'
-      : 'http://10.0.2.2:8080';
+  static String serverUrl = dotenv.env['KEYCLOAK_URL'] ?? "";
 
   /// Nombre del realm en Keycloak
-  static const String realm = 'flutter-app';
+  static String realm = dotenv.env['REALM'] ?? "";
 
   /// Client ID registrado en Keycloak
-  static const String clientId = 'klk_client';
-
-  static const String? clientSecret = null;
+  static String clientId = dotenv.env['CLIENT_ID'] ?? "";
 
   /// URL base del realm
   static String get realmUrl => '$serverUrl/realms/$realm';
@@ -47,16 +44,17 @@ class KeyclockConstants {
     'openid',
     'profile',
     'email',
-    'offline_access', // Necesario para refresh tokens
+    // 'offline_access',
   ];
 
   /// Redirect URI para el callback de autenticación
   /// En web usa la URL actual, en mobile usa custom scheme
   static String get redirectUri {
     if (kIsWeb) {
-      // Para web, usa la URL base de tu aplicación
+      // Para web, usa la URL o el dominio donde esta alojada tu aplicacion
       return 'http://localhost:3000/callback';
     }
+    // Para Android, usa el schema declarado en el android manifest
     return 'com.flutter.app://callback';
   }
 

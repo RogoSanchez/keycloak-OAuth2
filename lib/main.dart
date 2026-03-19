@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:keycloack_integrations/src/presentation/login/bloc/auth_bloc/auth_bloc.dart';
 import 'package:keycloack_integrations/src/router/app_router.dart';
 import 'package:keycloack_integrations/src/router/di.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  
   await setupDependencies();
   runApp(const MainApp());
 }

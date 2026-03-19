@@ -150,7 +150,7 @@ class LoginWeb extends StatelessWidget {
                                   ),
                                   SizedBox(width: 12),
                                   Text(
-                                    'Continuar con Keycloak',
+                                    'Continuar con Idp',
                                     style: TextStyle(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w600,

@@ -6,7 +6,7 @@ import 'package:keycloack_integrations/src/core/constants/keyclock_constants.dar
 import 'package:keycloack_integrations/src/core/exceptions/error_handling.dart';
 import 'package:keycloack_integrations/src/core/exceptions/exceptions.dart';
 import 'package:keycloack_integrations/src/core/storage/storage.dart';
-import 'package:keycloack_integrations/src/entities/model/token_model.dart';
+import 'package:keycloack_integrations/src/data/model/token_model.dart';
 
 /// Servicio abstracto para la integración con Keycloak
 ///
@@ -68,8 +68,6 @@ abstract class AbstractKeycloakService {
         KeyclockConstants.tokenUrl,
         data: {
           'client_id': KeyclockConstants.clientId,
-          if (KeyclockConstants.clientSecret != null)
-            'client_secret': KeyclockConstants.clientSecret,
           'refresh_token': currentTokenInternal!.refreshToken,
           'grant_type': 'refresh_token',
         },
@@ -114,8 +112,6 @@ abstract class AbstractKeycloakService {
           KeyclockConstants.logoutUrl,
           data: {
             'client_id': KeyclockConstants.clientId,
-            if (KeyclockConstants.clientSecret != null)
-              'client_secret': KeyclockConstants.clientSecret,
             'refresh_token': currentTokenInternal!.refreshToken,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType),
@@ -148,8 +144,7 @@ abstract class AbstractKeycloakService {
     };
   }
 
-  ///Se le hace override en las clases hijas - se implementan
-  /// Login con navegador (OAuth2/OIDC) - implementado por cada plataforma
+  ///Se le hace override en las clases hijas - implementado por cada plataforma
   Future<void> loginWithBrowser();
 
   /// Maneja el callback de OAuth (principalmente para web)

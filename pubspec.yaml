@@ -1,5 +1,5 @@
 name: keycloack_integrations
-description: "A new Flutter project."
+description: "Integracion de OAuth2 con Keycloack en Flutter"
 publish_to: 'none'
 version: 0.1.0
 
@@ -7,16 +7,15 @@ environment:
   sdk: ^3.10.0
 
 dependencies:
-  app_links: ^7.0.0
   bloc: ^9.2.0
   dio: ^5.9.1
   flutter:
     sdk: flutter
   flutter_appauth: ^11.0.0
   flutter_bloc: ^9.1.1
+  flutter_dotenv: ^6.0.0
   flutter_screenutil: ^5.9.3
   flutter_secure_storage: ^10.0.0
-  formz: ^0.8.0
   freezed: ^3.2.5
   freezed_annotation: ^3.1.0
   get_it: ^9.2.0
@@ -34,3 +33,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - .env

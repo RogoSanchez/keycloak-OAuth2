@@ -6,7 +6,7 @@ import 'package:keycloack_integrations/src/data/repositories/autentication_repos
 import 'package:keycloack_integrations/src/presentation/loading/loading_page.dart';
 import 'package:keycloack_integrations/src/presentation/login/bloc/auth_bloc/auth_bloc.dart';
 import 'package:keycloack_integrations/src/presentation/login/screens/login_screen.dart';
-import 'package:keycloack_integrations/src/presentation/main/main_screen.dart';
+import 'package:keycloack_integrations/src/presentation/home/main_screen.dart';
 import 'package:keycloack_integrations/src/router/di.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
@@ -32,7 +32,7 @@ GoRouter createRouter() {
 
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: '/loading',
+    initialLocation: '/main',
     refreshListenable: GoRouterRefreshStream(getIt<AuthBloc>().stream),
     redirect: (context, state) async {
       final authState = getIt<AuthBloc>().state;
@@ -81,7 +81,7 @@ GoRouter createRouter() {
       ),
       GoRoute(path: '/loading', builder: (context, state) => LoadingPage()),
 
-      GoRoute(path: '/main', builder: (context, state) => MainScreen()),
+      GoRoute(path: '/main', builder: (context, state) => const MainScreen()),
     ],
   );
 }

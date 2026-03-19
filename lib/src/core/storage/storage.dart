@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:keycloack_integrations/src/entities/model/token_model.dart';
+import 'package:keycloack_integrations/src/data/model/token_model.dart';
 
 class StorageKeys {
   StorageKeys._();
@@ -59,12 +59,6 @@ class StorageService {
     }
   }
 
-
-  /// Guarda el access token
-  Future<void> saveAccessToken(String token) async {
-    await _saveSecure(StorageKeys.accessToken, token);
-  }
-
   /// Obtiene el access token
   Future<String?> getAccessToken() async {
     return await _readSecure(StorageKeys.accessToken);
@@ -115,7 +109,6 @@ class StorageService {
     await _saveSecure(StorageKeys.tokenData, jsonString);
 
     // También guardamos tokens individuales para acceso rápido
-    await saveAccessToken(tokens.accessToken);
     await saveRefreshToken(tokens.refreshToken);
     if (tokens.idToken != null) {
       await saveIdToken(tokens.idToken!);
@@ -146,12 +139,6 @@ class StorageService {
     ]);
   }
 
-
-  /// Guarda datos de usuario como JSON
-  Future<void> saveUserData(Map<String, dynamic> userData) async {
-    final jsonString = jsonEncode(userData);
-    await _saveSecure(StorageKeys.userData, jsonString);
-  }
 
   /// Obtiene datos de usuario
   Future<Map<String, dynamic>?> getUserData() async {
@@ -184,10 +171,4 @@ class StorageService {
     await Future.wait([deleteTokens(), deleteUserData()]);
   }
 
-  /// Verifica si los tokens almacenados siguen siendo válidos
-  Future<bool> areTokensValid() async {
-    final tokens = await getTokens();
-    if (tokens == null) return false;
-    return tokens.isAccessTokenValid || tokens.isRefreshTokenValid;
-  }
 }
